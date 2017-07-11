@@ -59,9 +59,15 @@ extension VTClient {
                 return
             }
             
-    
-    print("This is my array of photos", photosDictionary)
+            guard let url = photosDictionary[Constants.FlickrResponseKeys.MediumURL] as? [String] else {
+                sendError("URL could not be printed in \(String(describing: photosDictionary))")
+                return
+            }
             
+    
+    print("This is my array of photos", url)
+            
+            completionHandler(url)
 
             
         }

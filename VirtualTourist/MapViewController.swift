@@ -6,18 +6,43 @@
 //  Copyright © 2017 J B. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import MapKit
+//import CoreData
 
-class MapViewController: UIViewController, MKMapViewDelegate {
+class MapViewController: UIViewController {
+    
+    // MARK: Properties
+    
+    var albums: [Album]?
+    let annotation = MKPointAnnotation()
+    let coordinate = CLLocationCoordinate2D()
+   
+    
+//    var sharedContext: NSManagedObjectContext {
+//        let appDeleate = UIApplication.shared.delegate as! AppDelegate
+//        return appDeleate.managedObjectContext!
+//    }
+    
+    // MARK: Outlets
     
     @IBOutlet weak var mapView: MKMapView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let initialLocation = CLLocation(latitude: 21.282778, longitude: -157.829444)
+        annotation.coordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        mapView.addAnnotation(annotation)
         
-        centerMapOnLocation(location: initialLocation)
+        // show artwork on map
+//        let artwork = Album(title: "King David Kalakaua",
+//                              
+//                              coordinate: CLLocationCoordinate2D(latitude: 21.283921, longitude: -157.831661))
+//        
+//        mapView.addAnnotation(artwork)
+        
+        // Setting ViewController as the delegate of the map view. We can do this in Main.storyboard, but I prefer to do it in code, where it’s more visible.
+        mapView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -25,7 +50,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         initialLongPressDetector()
     }
     
-    let annotation = MKPointAnnotation()
     
     let regionRadius: CLLocationDistance = 1000
     func centerMapOnLocation(location: CLLocation) {
@@ -35,46 +59,31 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
 
 
-    func initialLongPressDetector() {
-        let longPressDetector = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.longPress(_:)))
+    func initialLongPressDetector(){
+        let longPressRecogniser = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.handleLongPress(_:)))
         
-        longPressDetector.minimumPressDuration = 1.0
-        mapView.addGestureRecognizer(longPressDetector)
+        longPressRecogniser.minimumPressDuration = 1.0
+        mapView.addGestureRecognizer(longPressRecogniser)
     }
     
-    func longPress(_ getstureRecognizer : UIGestureRecognizer) {
+    func handleLongPress(_ getstureRecognizer : UIGestureRecognizer){
         if getstureRecognizer.state != .began { return }
         
         let touchPoint = getstureRecognizer.location(in: mapView)
         let touchMapCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
         
-        let album = Album(coordinate: touchMapCoordinate, context: sharedContext)
+        let album = Album(title: "Hola amigo", coordinate: touchMapCoordinate)
         
         mapView.addAnnotation(album)
-        albums!.append(album)
-        try! sharedContext.save()
-    
+//        albums!.append(album)
+//        try! sharedContext.save()
     }
     
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation is MKUserLocation {
-            //return nil so map view draws "blue dot" for standard user location
-            return nil
-        }
-        
-        let reuseId = "pin"
-        
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.animatesDrop = true
-            pinView!.canShowCallout = true
-        }
-        else {
-            pinView!.annotation = annotation
-        }
-        
-        return pinView
-    }
+
+ 
+
+    
+    
+    
 }
 
