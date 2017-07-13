@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		293040111F0F2C6D0026AB26 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293040101F0F2C6D0026AB26 /* Photo.swift */; };
+		294A221B1F17C94800DC669E /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294A221A1F17C94800DC669E /* PhotoCell.swift */; };
+		294A221D1F17CCF300DC669E /* VCMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294A221C1F17CCF300DC669E /* VCMapView.swift */; };
+		299833891F16F1F400F25BA5 /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299833881F16F1F400F25BA5 /* GCD.swift */; };
 		29A69C571C36244700DAF36D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A69C561C36244700DAF36D /* AppDelegate.swift */; };
 		29A69C591C36244700DAF36D /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A69C581C36244700DAF36D /* MapViewController.swift */; };
 		29A69C5C1C36244700DAF36D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29A69C5A1C36244700DAF36D /* Main.storyboard */; };
@@ -23,7 +26,6 @@
 		29CADA031F0F18EE00885381 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CADA021F0F18EE00885381 /* AlertController.swift */; };
 		29D529471F14D38E00CE6FE4 /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 29D529451F14D38E00CE6FE4 /* VirtualTourist.xcdatamodeld */; };
 		29D529491F14D53600CE6FE4 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D529481F14D53600CE6FE4 /* ImageCache.swift */; };
-		29D5294B1F14E46C00CE6FE4 /* VCMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D5294A1F14E46C00CE6FE4 /* VCMapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,9 @@
 
 /* Begin PBXFileReference section */
 		293040101F0F2C6D0026AB26 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		294A221A1F17C94800DC669E /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		294A221C1F17CCF300DC669E /* VCMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCMapView.swift; sourceTree = "<group>"; };
+		299833881F16F1F400F25BA5 /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
 		29A69C531C36244700DAF36D /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29A69C561C36244700DAF36D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29A69C581C36244700DAF36D /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -66,7 +71,6 @@
 		29CADA021F0F18EE00885381 /* AlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		29D529461F14D38E00CE6FE4 /* VirtualTourist.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VirtualTourist.xcdatamodel; sourceTree = "<group>"; };
 		29D529481F14D53600CE6FE4 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
-		29D5294A1F14E46C00CE6FE4 /* VCMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCMapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +124,7 @@
 				29A69C561C36244700DAF36D /* AppDelegate.swift */,
 				29CADA021F0F18EE00885381 /* AlertController.swift */,
 				29D529481F14D53600CE6FE4 /* ImageCache.swift */,
+				299833881F16F1F400F25BA5 /* GCD.swift */,
 				29A69C871C362DF700DAF36D /* Controller */,
 				29A69C601C36244700DAF36D /* Assets.xcassets */,
 				29A69C5A1C36244700DAF36D /* Main.storyboard */,
@@ -153,8 +158,9 @@
 			isa = PBXGroup;
 			children = (
 				29A69C581C36244700DAF36D /* MapViewController.swift */,
-				29D5294A1F14E46C00CE6FE4 /* VCMapView.swift */,
 				29A69C881C362E5600DAF36D /* AlbumViewController.swift */,
+				294A221C1F17CCF300DC669E /* VCMapView.swift */,
+				294A221A1F17C94800DC669E /* PhotoCell.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -324,7 +330,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29D5294B1F14E46C00CE6FE4 /* VCMapView.swift in Sources */,
+				294A221B1F17C94800DC669E /* PhotoCell.swift in Sources */,
+				299833891F16F1F400F25BA5 /* GCD.swift in Sources */,
 				29D529491F14D53600CE6FE4 /* ImageCache.swift in Sources */,
 				29A69C891C362E5600DAF36D /* AlbumViewController.swift in Sources */,
 				29CADA031F0F18EE00885381 /* AlertController.swift in Sources */,
@@ -335,6 +342,7 @@
 				29D529471F14D38E00CE6FE4 /* VirtualTourist.xcdatamodeld in Sources */,
 				29A69C571C36244700DAF36D /* AppDelegate.swift in Sources */,
 				29CAD9F81F0F169800885381 /* VTClient.swift in Sources */,
+				294A221D1F17CCF300DC669E /* VCMapView.swift in Sources */,
 				29CAD9FD1F0F16E000885381 /* Album.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

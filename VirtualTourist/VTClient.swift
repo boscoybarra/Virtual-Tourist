@@ -7,12 +7,16 @@
 //
 
 import Foundation
+import MapKit
 
 class VTClient: NSObject {
     
     // MARK: Properties
     
+    var photos = [Photo]()
+    
     static var session = URLSession.shared
+    
     
     // MARK: GET
     
@@ -60,6 +64,8 @@ class VTClient: NSObject {
             /* 5/6. Parse and use the data */
             
             self.parseJSONWithCompletionHandler(data: data as NSData, completionHandler: completionHandler)
+            
+            
             
         }
         
@@ -116,6 +122,26 @@ class VTClient: NSObject {
             let maximumLat = min(lat + Constants.Flickr.SearchBBoxHalfHeight, Constants.Flickr.SearchLatRange.1)
             return "\(minimumLon),\(minimumLat),\(maximumLon),\(maximumLat)"
         
+    }
+    
+    static func convertPhotoObjectToUrl(_ object: NSDictionary) -> String{
+        //URL format = https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+        let farmId = object["farm"] as! Int
+        let serverId = object["server"] as! NSString
+        let photoId = object["id"] as! NSString
+        let secret = object["secret"] as! NSString
+        
+        
+        return "https://farm\(farmId).staticflickr.com/\(serverId)/\(photoId)_\(secret).jpg"
+    }
+    
+    // MARK: Shared Instance
+    
+    class func sharedInstance() -> VTClient {
+        struct Singleton {
+            static var sharedInstance = VTClient()
+        }
+        return Singleton.sharedInstance
     }
 
 }

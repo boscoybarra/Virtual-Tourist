@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreLocation
+import MapKit
 
 
 enum RequestError: Error {
@@ -28,7 +29,7 @@ extension VTClient {
     
     //MARK: -- Function GETs the images from Flickr
     
-    static func getPhotosLocation(_ coordinate: CLLocationCoordinate2D, completionHandler: @escaping (_ urls: [String]) -> Void) {
+    static func getPhotosLocation(_ coordinate: CLLocationCoordinate2D, completionHandler: @escaping (_ urls: [String]?) -> Void) {
         
          let bbox = VTClient.bboxString(coordinate.latitude, long: coordinate.longitude)
         
@@ -59,21 +60,30 @@ extension VTClient {
                 return
             }
             
-            guard let url = photosDictionary[Constants.FlickrResponseKeys.MediumURL] as? [String] else {
-                sendError("URL could not be printed in \(String(describing: photosDictionary))")
+            
+            /* GUARD: Is "photo" in our result? */
+            guard let photosArray = photosDictionary[Constants.FlickrResponseKeys.Photo] as? NSArray else {
+                sendError("Photos dictionary could not be printed in \(String(describing: photosDictionary))")
                 return
             }
             
-    
-    print("This is my array of photos", url)
+            var results = [String]()
             
-            completionHandler(url)
+            
+            for photo in photosArray {
+                results.append(self.convertPhotoObjectToUrl(photo as! NSDictionary))
+            }
+            
+            completionHandler(results)
+            
+            print("this are my urls?",results)
 
-            
         }
+    }
 }
 
 
-}
+
+
 
 

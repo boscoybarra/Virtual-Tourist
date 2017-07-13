@@ -41,30 +41,5 @@ class Album: NSObject, MKAnnotation {
 //        return Album(title: title, coordinate: coordinate)
 //    }
     
-    func getPhotos(_ completionHandler: @escaping (_ photos: [Photo]) -> Void){
-        if(photos != nil && (photos?.count)! > 0) {
-            //Return photos from the shared data
-            completionHandler(photos!)
-        } else {
-            //Return photos from the API
-            VTClient.getPhotosLocation(coordinate, completionHandler:{
-                (urls:[String]) in
-                print("This are my urls",urls)
-                DispatchQueue.main.async(execute: {
-                    var photos = [Photo]()
-                    
-//                    for url in urls {
-//                        let photo = Photo(url: url, context: self.sharedContext)
-//                        photo.album = self
-//                        photos.append(photo)
-//                    }
-                    
-                    
-//                    try! self.sharedContext.save()
-                    completionHandler(photos)
-                });
-            });
-        }
-    }
-    
+
 }

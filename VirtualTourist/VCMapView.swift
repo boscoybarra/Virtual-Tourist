@@ -34,5 +34,27 @@ extension MapViewController: MKMapViewDelegate {
         return pinView
     }
     
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        selectedAlbum = view.annotation as? Album
+        performSegue(withIdentifier: "segueToAlbum", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "segueToAlbum") {
+            let destinationController = segue.destination as? AlbumViewController
+            destinationController!.album = selectedAlbum
+            deselectAllAnnotations()
+        }
+    }
+    
+    func deselectAllAnnotations(){
+        
+        let selectedAnnotations = mapView.selectedAnnotations
+        
+        for annotation in selectedAnnotations {
+            mapView.deselectAnnotation(annotation, animated: false)
+        }
+    }
+    
     
 }

@@ -6,6 +6,7 @@
 //  Copyright © 2017 J B. All rights reserved.
 //
 
+
 import Foundation
 import CoreData
 
@@ -24,4 +25,5 @@ class Photo: NSManagedObject {
         self.url = url
     }
 }
+
 

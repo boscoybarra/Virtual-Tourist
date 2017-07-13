@@ -14,7 +14,7 @@ import MapKit
 class MapViewController: UIViewController {
     
     // MARK: Properties
-    
+    var selectedAlbum : Album?
     var albums: [Album]?
     let annotation = MKPointAnnotation()
     let coordinate = CLLocationCoordinate2D()
