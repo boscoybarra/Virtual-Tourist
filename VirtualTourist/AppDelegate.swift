@@ -13,7 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let flickrApiClient = VTClient()
+    let apiClient = VTClient()
     
     struct Cache {
         static let imageCache = ImageCache()

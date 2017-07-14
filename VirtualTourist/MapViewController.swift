@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import MapKit
-//import CoreData
+import CoreData
 
 class MapViewController: UIViewController {
     
@@ -20,10 +20,10 @@ class MapViewController: UIViewController {
     let coordinate = CLLocationCoordinate2D()
    
     
-//    var sharedContext: NSManagedObjectContext {
-//        let appDeleate = UIApplication.shared.delegate as! AppDelegate
-//        return appDeleate.managedObjectContext!
-//    }
+    var sharedContext: NSManagedObjectContext {
+        let appDeleate = UIApplication.shared.delegate as! AppDelegate
+        return appDeleate.managedObjectContext!
+    }
     
     // MARK: Outlets
     
@@ -33,15 +33,6 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         annotation.coordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
         mapView.addAnnotation(annotation)
-        
-        // show artwork on map
-//        let artwork = Album(title: "King David Kalakaua",
-//                              
-//                              coordinate: CLLocationCoordinate2D(latitude: 21.283921, longitude: -157.831661))
-//        
-//        mapView.addAnnotation(artwork)
-        
-        // Setting ViewController as the delegate of the map view. We can do this in Main.storyboard, but I prefer to do it in code, where it’s more visible.
         mapView.delegate = self
     }
     
@@ -72,11 +63,9 @@ class MapViewController: UIViewController {
         let touchPoint = getstureRecognizer.location(in: mapView)
         let touchMapCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
         
-        let album = Album(title: "Hola amigo", coordinate: touchMapCoordinate)
+        let album = Album(coordinate: touchMapCoordinate, context: sharedContext)
         
         mapView.addAnnotation(album)
-//        albums!.append(album)
-//        try! sharedContext.save()
     }
     
 

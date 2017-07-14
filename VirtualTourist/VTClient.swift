@@ -22,17 +22,13 @@ class VTClient: NSObject {
     
     @discardableResult static func taskForGETMethod(methodParameters: [String:AnyObject], completionHandler: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask{
         
-        /* 1. Set the parameters */
         
         let url = self.flickrURLFromParameters(methodParameters)
         
         let request = NSMutableURLRequest(url: url)
         
-        /* 2/3. Build the UrL and configure the request */
+        print("This is the URL request",request)
         
-        print("esta es la URL",request)
-        
-        //make request
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
             func sendError(_ error: String) {
@@ -42,30 +38,22 @@ class VTClient: NSObject {
                 return
             }
             
-            
-            /* GUARD: Was there an error? */
             guard (error == nil) else {
                 sendError("There was an error with your request: \(error!)")
                 return
             }
             
-            /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
                 sendError("Your request returned a status code other than 2xx!")
                 return
             }
             
-            /* GUARD: Was there any data returned? */
             guard let data = data else {
                 sendError("No data was returned by the request!")
                 return
             }
             
-            /* 5/6. Parse and use the data */
-            
             self.parseJSONWithCompletionHandler(data: data as NSData, completionHandler: completionHandler)
-            
-            
             
         }
         
@@ -86,7 +74,7 @@ class VTClient: NSObject {
             return
         }
         
-        /* GUARD: Did Flickr return an error (stat != ok)? */
+        /* GUARD: Did Flickr return an error? */
         guard let stat = parsedResult[Constants.FlickrResponseKeys.Status] as? String, stat == Constants.FlickrResponseValues.OKStatus else {
             completionHandler(nil, NSError(domain: "Data did not return as OK", code: 1, userInfo: nil))
             return
@@ -104,7 +92,6 @@ class VTClient: NSObject {
         components.host = Constants.Flickr.APIHost
         components.path = Constants.Flickr.APIPath
         components.queryItems = [URLQueryItem]()
-    
         
         for (key, value) in parameters {
             let queryItem = URLQueryItem(name: key, value: "\(value)")
@@ -125,7 +112,6 @@ class VTClient: NSObject {
     }
     
     static func convertPhotoObjectToUrl(_ object: NSDictionary) -> String{
-        //URL format = https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
         let farmId = object["farm"] as! Int
         let serverId = object["server"] as! NSString
         let photoId = object["id"] as! NSString

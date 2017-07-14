@@ -10,22 +10,9 @@ import Foundation
 import CoreLocation
 import MapKit
 
-
-enum RequestError: Error {
-    case failedRequest
-    case badResponse
-    case noDataReturned
-    case parsingFailed
-    case noSessionDataReturned
-    case noAccountDataReturned
-    case noAccountRegistered
-    case other
-}
-
 // MARK: - VTClient (Convenient Resource Methods)
 
 extension VTClient {
-    
     
     //MARK: -- Function GETs the images from Flickr
     
@@ -54,14 +41,11 @@ extension VTClient {
                 return
             }
             
-            /* GUARD: Is "photos" key in our result? */
             guard let photosDictionary = data![Constants.FlickrResponseKeys.Photos] as? [String:AnyObject] else {
                 sendError("Photos dictionary could not be printed in \(String(describing: data))")
                 return
             }
             
-            
-            /* GUARD: Is "photo" in our result? */
             guard let photosArray = photosDictionary[Constants.FlickrResponseKeys.Photo] as? NSArray else {
                 sendError("Photos dictionary could not be printed in \(String(describing: photosDictionary))")
                 return
@@ -76,7 +60,7 @@ extension VTClient {
             
             completionHandler(results)
             
-            print("this are my urls?",results)
+            print("This are my urls?",results)
 
         }
     }

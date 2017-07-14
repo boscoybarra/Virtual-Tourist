@@ -14,9 +14,4 @@ class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var loadingSpiner: UIActivityIndicatorView!
     
-    override func prepareForReuse() {
-        imageView.image = nil
-        loadingSpiner.isHidden = false
-        loadingSpiner.startAnimating()
-    }
 }
