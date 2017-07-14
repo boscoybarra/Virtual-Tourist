@@ -36,11 +36,12 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     fileprivate func retrieveNewImages() {
+        loadingSpiner.isHidden = false
         
         album.getPhotos({
             (photos:[Photo]) in
             
-            UIView.transition(with: self.loadingSpiner, duration: TimeInterval(0.4), options: UIViewAnimationOptions.transitionCrossDissolve, animations: {}, completion: {(finished: Bool) -> () in })
+            UIView.transition(with: self.loadingSpiner, duration: TimeInterval(0.5), options: UIViewAnimationOptions.transitionCrossDissolve, animations: {}, completion: {(finished: Bool) -> () in })
             
             self.loadingSpiner.isHidden = true
             self.collectionView.reloadData()
@@ -55,24 +56,6 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
         } else {
             return album.photos!.count
         }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        let newCollection = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath)
-        
-        self.buttonNewCollection = newCollection.subviews[0] as? UIButton
-        self.noImagesLabel = newCollection.subviews[1] as? UILabel
-
-        if album.photos != nil && album.photos!.count > 0 {
-            noImagesLabel?.isHidden = true
-            buttonNewCollection?.isHidden = false
-        } else {
-            noImagesLabel?.isHidden = false
-            buttonNewCollection?.isHidden = true
-        }
-        
-        return newCollection
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -99,6 +82,26 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let newCollection = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath)
+        
+        self.buttonNewCollection = newCollection.subviews[0] as? UIButton
+        self.noImagesLabel = newCollection.subviews[1] as? UILabel
+        
+        if album.photos != nil && album.photos!.count > 0 {
+            noImagesLabel?.isHidden = true
+            buttonNewCollection?.isHidden = false
+        } else {
+            noImagesLabel?.isHidden = false
+            buttonNewCollection?.isHidden = true
+        }
+        
+        return newCollection
+    }
+    
+    // MARK: Helper Methods
+    
     fileprivate var allImagesLoaded: Bool {
         var loaded = true
         
@@ -121,6 +124,8 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
         album.removeAllPhotos()
         retrieveNewImages()
     }
+    
+    // MARK: Shared Context
     
     fileprivate var sharedContext: NSManagedObjectContext {
         let appDeleate = UIApplication.shared.delegate as! AppDelegate
