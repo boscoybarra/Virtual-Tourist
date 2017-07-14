@@ -35,28 +35,6 @@ class Album: NSManagedObject, MKAnnotation {
     var title: String? {
         return "\(objectID)"
     }
-    
-    func getPhotos(_ completionHandler: @escaping (_ photos: [Photo]) -> Void){
-        if(photos != nil && (photos?.count)! > 0) {
-            //Return photos from the shared data
-            completionHandler(photos!)
-        } else {
-            //Return photos from the API
-            VTClient.getPhotosLocation(coordinate, completionHandler: { (urls:[String]?) in
-                DispatchQueue.main.async(execute: {
-                var photos = [Photo]()
-                
-                for url in urls! {
-                    let photo = Photo(url: url, context: self.sharedContext)
-                    photo.album = self
-                    photos.append(photo)
-                }
-                    try! self.sharedContext.save()
-                    completionHandler(photos)
-                });
-            })
-        }
-    }
 
     fileprivate var apiClient : VTClient {
         let delegate = UIApplication.shared.delegate as! AppDelegate

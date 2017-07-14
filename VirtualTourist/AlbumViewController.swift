@@ -16,6 +16,7 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
     // MARK: Properties
     
     var album: Album!
+    var photos: [Photo]?
     
     @IBOutlet var mapView: MKMapView!
     @IBOutlet var collectionView: UICollectionView!
@@ -38,7 +39,7 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
     fileprivate func retrieveNewImages() {
         loadingSpiner.isHidden = false
         
-        album.getPhotos({
+        self.getPhotos({
             (photos:[Photo]) in
             
             UIView.transition(with: self.loadingSpiner, duration: TimeInterval(0.5), options: UIViewAnimationOptions.transitionCrossDissolve, animations: {}, completion: {(finished: Bool) -> () in })
@@ -47,6 +48,28 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
             self.collectionView.reloadData()
         });
     }
+
+    fileprivate func getPhotos(_ completionHandler: @escaping (_ photos: [Photo]) -> Void){
+        if(photos != nil && (photos?.count)! > 0) {
+            completionHandler(photos!)
+        } else {
+            VTClient.getPhotosLocation(album.coordinate, completionHandler: { (urls:[String]?) in
+                DispatchQueue.main.async(execute: {
+                    var photos = [Photo]()
+                    
+                    for url in urls! {
+                        let photo = Photo(url: url, context: self.sharedContext)
+                        photo.album = self.album
+                        photos.append(photo)
+                    }
+                    try! self.sharedContext.save()
+                    completionHandler(photos)
+                });
+            })
+        }
+    }
+    
+
     
     // MARK: Collection View Data Source
     
