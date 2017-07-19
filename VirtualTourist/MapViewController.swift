@@ -15,15 +15,15 @@ class MapViewController: UIViewController {
     
     // MARK: Properties
     var selectedAlbum : Album?
-    var albums: [Album]?
+
     let annotation = MKPointAnnotation()
     let coordinate = CLLocationCoordinate2D()
-   
     
-    var sharedContext: NSManagedObjectContext {
-        let appDeleate = UIApplication.shared.delegate as! AppDelegate
-        return appDeleate.managedObjectContext!
-    }
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    lazy var context: NSManagedObjectContext = self.appDelegate.stack.context
+   
+    var selectedAnnotation: MKAnnotation?
+    var tempAnnotation: MKPointAnnotation?
     
     // MARK: Outlets
     
@@ -31,14 +31,17 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        mapView.addAnnotation(annotation)
         mapView.delegate = self
+        
+        initialLongPressDetector()
+        
+        //Fetch albums
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        initialLongPressDetector()
+        
     }
     
     
@@ -50,29 +53,73 @@ class MapViewController: UIViewController {
     }
 
 
-    func initialLongPressDetector(){
-        let longPressRecogniser = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.handleLongPress(_:)))
-        
-        longPressRecogniser.minimumPressDuration = 1.0
-        mapView.addGestureRecognizer(longPressRecogniser)
+    func initialLongPressDetector() {
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap(gestureRecognizer:)))
+        mapView.addGestureRecognizer(gestureRecognizer)
     }
     
-    func handleLongPress(_ getstureRecognizer : UIGestureRecognizer){
-        if getstureRecognizer.state != .began { return }
+    func handleLongTap(gestureRecognizer: UILongPressGestureRecognizer) {
+        let location = gestureRecognizer.location(in: mapView)
+        let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
         
-        let touchPoint = getstureRecognizer.location(in: mapView)
-        let touchMapCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
-        
-        let album = Album(coordinate: touchMapCoordinate, context: sharedContext)
-        
-        mapView.addAnnotation(album)
+        // Handle drop drag and save
+        if gestureRecognizer.state == .began {
+            tempAnnotation = getAnnotationFromCoordinate(coordinate: coordinate)
+            
+            mapView.addAnnotation(tempAnnotation!)
+            
+        } else if gestureRecognizer.state == .changed {
+            tempAnnotation!.coordinate = coordinate // Can Force unwrap since begin must be called before changed
+            
+        } else if gestureRecognizer.state == .ended {
+            mapView.removeAnnotation(tempAnnotation!) // Can Force unwrap since begin must be called before ended
+            
+            savePin(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        }
     }
     
-
- 
-
+    // MARK: Core Data Functions
     
     
+    func savePin(latitude: Double, longitude: Double) {
+        let albumPin = Album(latitude: latitude, longitude: longitude, context: context)
+        
+        self.mapView.addAnnotation(getAnnotationFromPin(album: albumPin))
+    }
+    
+    // MARK: View User Defaults
+    
+    func checkMapDefaults() {
+        if appHasLaunchedBefore() {
+            let coordinate = getCenter()
+            mapView.setCenter(coordinate, animated: false)
+            focus(mapView: mapView, location: coordinate)
+        } else {
+            saveCenter(coordinate: mapView.centerCoordinate)
+        }
+    }
+    
+    func getCenter() -> CLLocationCoordinate2D {
+        let latitude = UserDefaults.standard.double(forKey: "latitude")
+        let longitude = UserDefaults.standard.double(forKey: "longitude")
+        
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    
+    func saveCenter(coordinate: CLLocationCoordinate2D) {
+        UserDefaults.standard.set(coordinate.latitude, forKey: "latitude")
+        UserDefaults.standard.set(coordinate.longitude, forKey: "longitude")
+    }
+    
+    
+    func deselectAllAnnotations(){
+        
+        let selectedAnnotations = mapView.selectedAnnotations
+        
+        for annotation in selectedAnnotations {
+            mapView.deselectAnnotation(annotation, animated: false)
+        }
+    }
     
 }
 

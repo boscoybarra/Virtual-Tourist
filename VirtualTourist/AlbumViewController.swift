@@ -11,7 +11,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class AlbumViewController: UIViewController, UICollectionViewDelegate {
     
     // MARK: Properties
     
@@ -23,12 +23,29 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
     @IBOutlet weak var loadingSpiner: UIView!
     var buttonNewCollection: UIButton?
     var noImagesLabel: UILabel?
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    lazy var context: NSManagedObjectContext = self.appDelegate.stack.context
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        // Add annotation to the map and focus on it
+        if let album = album {
+            let annotation = getAnnotationFromPin(album: album)
+            mapView.addAnnotation(annotation)
+            focus(mapView: mapView, location: annotation.coordinate)
+        }
+    }
+    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        mapView.addAnnotation(album)
-        mapView.showAnnotations([album], animated: true)
+        
         
         navigationController?.isNavigationBarHidden = false
         
@@ -53,16 +70,17 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
         if(photos != nil && (photos?.count)! > 0) {
             completionHandler(photos!)
         } else {
-            VTClient.getPhotosLocation(album.coordinate, completionHandler: { (urls:[String]?) in
+            //TODO: Get coordinates from Album dictionary
+            VTClient.getPhotosLocation(album: album, completionHandler: { (urls:[String]?) in
                 DispatchQueue.main.async(execute: {
                     var photos = [Photo]()
                     
                     for url in urls! {
-                        let photo = Photo(url: url, context: self.sharedContext)
+                        let photo = Photo(url: url, context: self.context)
                         photo.album = self.album
                         photos.append(photo)
                     }
-                    try! self.sharedContext.save()
+                    try! self.context.save()
                     completionHandler(photos)
                 });
             })
@@ -85,7 +103,9 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoCell
         
-        let imageUrl = URL(string: album.photos![indexPath.item].url)
+        let imageUrl = URL(string: self.photos![indexPath.item].url!)
+        
+        
         self.executeOnMain {
             let image = UIImage(data: try! Data(contentsOf: imageUrl!))
     
@@ -129,11 +149,8 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
         var loaded = true
         
         for photo in album.photos! {
-            let imageId = photo.objectID.uriRepresentation().lastPathComponent
+            let imageId = (photo as AnyObject).objectID.uriRepresentation().lastPathComponent
             
-            if AppDelegate.Cache.imageCache.imageWithIdentifier(imageId) == nil {
-                loaded = false
-            }
         }
         
         return loaded
@@ -144,15 +161,19 @@ class AlbumViewController: UIViewController, UICollectionViewDelegate, UICollect
     // MARK: IBActions
     
     @IBAction func newCollection() {
-        album.removeAllPhotos()
+        self.removeAllPhotos()
         retrieveNewImages()
     }
     
-    // MARK: Shared Context
+
     
-    fileprivate var sharedContext: NSManagedObjectContext {
-        let appDeleate = UIApplication.shared.delegate as! AppDelegate
-        return appDeleate.managedObjectContext!
+    
+    // MARK: Remove Photos
+    
+    func removeAllPhotos(){
+        while (photos!.count > 0) {
+            photos![0].album = nil
+        }
     }
 
 

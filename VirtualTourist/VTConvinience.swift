@@ -16,9 +16,11 @@ extension VTClient {
     
     //MARK: -- Function GETs the images from Flickr
     
-    static func getPhotosLocation(_ coordinate: CLLocationCoordinate2D, completionHandler: @escaping (_ urls: [String]?) -> Void) {
+    static func getPhotosLocation(album:Album, completionHandler: @escaping (_ urls: [String]?) -> Void) {
         
-         let bbox = VTClient.bboxString(coordinate.latitude, long: coordinate.longitude)
+        let latitude = album.latitude
+        let longitude = album.longitude
+        let bbox = VTClient.bboxString(latitude, long: longitude)
         
             let methodParameters = [
                 Constants.FlickrParameterKeys.Method: Constants.FlickrParameterValues.SearchMethod,

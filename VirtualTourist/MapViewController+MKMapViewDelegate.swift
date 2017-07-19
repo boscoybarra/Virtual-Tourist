@@ -1,5 +1,5 @@
 //
-//  VCMapView.swift
+//  MapViewController+MKMapViewDelegate.swift
 //  VirtualTourist
 //
 //  Created by J B on 7/11/17.
@@ -22,7 +22,7 @@ extension MapViewController: MKMapViewDelegate {
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.animatesDrop = true
-            pinView!.canShowCallout = true
+            pinView!.canShowCallout = false
             pinView!.rightCalloutAccessoryView = UIButton(type: .system)
         }
         else {
@@ -45,14 +45,7 @@ extension MapViewController: MKMapViewDelegate {
         }
     }
     
-    func deselectAllAnnotations(){
-        
-        let selectedAnnotations = mapView.selectedAnnotations
-        
-        for annotation in selectedAnnotations {
-            mapView.deselectAnnotation(annotation, animated: false)
-        }
-    }
+    
     
     
 }
