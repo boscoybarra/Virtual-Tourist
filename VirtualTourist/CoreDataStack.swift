@@ -1,9 +1,9 @@
 //
 //  CoreDataStack.swift
-//  VirtualTourist
 //
-//  Created by J B on 7/19/17.
-//  Copyright © 2017 J B. All rights reserved.
+//
+//  Created by Fernando Rodríguez Romero on 21/02/16.
+//  Copyright © 2016 udacity.com. All rights reserved.
 //
 
 import CoreData
