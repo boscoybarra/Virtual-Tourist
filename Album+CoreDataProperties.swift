@@ -2,7 +2,7 @@
 //  Album+CoreDataProperties.swift
 //  VirtualTourist
 //
-//  Created by J B on 7/19/17.
+//  Created by J B on 7/20/17.
 //  Copyright © 2017 J B. All rights reserved.
 //
 
@@ -19,7 +19,6 @@ extension Album {
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
     @NSManaged public var photos: NSSet?
-
 
 }
 

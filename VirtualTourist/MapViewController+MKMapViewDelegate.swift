@@ -12,18 +12,15 @@ import MapKit
 extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation is MKUserLocation {
-            return nil
-        }
-        
         let reuseId = "pin"
         
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.animatesDrop = true
-            pinView!.canShowCallout = false
-            pinView!.rightCalloutAccessoryView = UIButton(type: .system)
+            pinView!.canShowCallout = true
+            pinView!.pinTintColor = .red
+            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         }
         else {
             pinView!.annotation = annotation
@@ -32,20 +29,27 @@ extension MapViewController: MKMapViewDelegate {
         return pinView
     }
     
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        selectedAlbum = view.annotation as? Album
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        guard !deleting else {
+            print("The Pin is being deleted")
+            
+            let annotation = view.annotation as! MKVirtualTouristAnnotation
+            let pin = annotation.album!
+            
+            context.delete(pin)
+            mapView.removeAnnotation(annotation)
+            return
+        }
+        print("Pin Tapped")
+        
+        selectedAnnotation = view.annotation
+        
         performSegue(withIdentifier: "segueToAlbum", sender: self)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "segueToAlbum") {
-            let destinationController = segue.destination as? AlbumViewController
-            destinationController!.album = selectedAlbum
-            deselectAllAnnotations()
-        }
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        saveCenter(coordinate: mapView.centerCoordinate)
     }
-    
-    
-    
     
 }

@@ -14,9 +14,10 @@ import MapKit
 
 extension VTClient {
     
+    
     //MARK: -- Function GETs the images from Flickr
     
-    static func getPhotosLocation(album:Album, completionHandler: @escaping (_ urls: [String]?) -> Void) {
+    static func getPhotosLocation(album:Album, completionHandler: @escaping PhotoURLsResponse) {
         
         let latitude = album.latitude
         let longitude = album.longitude
@@ -60,7 +61,7 @@ extension VTClient {
                 results.append(self.convertPhotoObjectToUrl(photo as! NSDictionary))
             }
             
-            completionHandler(results)
+            completionHandler(results, error)
             
             print("This are my urls?",results)
 

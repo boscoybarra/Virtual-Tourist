@@ -21,9 +21,10 @@ func getAnnotationFromPin(album: Album) -> MKVirtualTouristAnnotation {
     annotation.title = "\(albumCount) Photo Album\(albumCount == 1 ? "":"s")"
     annotation.coordinate = coordinate
     annotation.album = album
-    
+    print("This are my annotations", annotation.album as Any)
+
     return annotation
-}
+    }
 
 
 func appHasLaunchedBefore() -> Bool {

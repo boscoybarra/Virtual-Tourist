@@ -25,6 +25,8 @@ class MapViewController: UIViewController {
     var selectedAnnotation: MKAnnotation?
     var tempAnnotation: MKPointAnnotation?
     
+    var deleting = false
+    
     // MARK: Outlets
     
     @IBOutlet weak var mapView: MKMapView!
@@ -83,6 +85,7 @@ class MapViewController: UIViewController {
     
     func savePin(latitude: Double, longitude: Double) {
         let albumPin = Album(latitude: latitude, longitude: longitude, context: context)
+        print("Latitude in da house",latitude, "Longitude in da house", longitude)
         
         self.mapView.addAnnotation(getAnnotationFromPin(album: albumPin))
     }
