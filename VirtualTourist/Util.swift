@@ -9,19 +9,19 @@
 import Foundation
 import MapKit
 
-func getAnnotationFromPin(album: Album) -> MKVirtualTouristAnnotation {
+func getAnnotationFromPin(pin: Pin) -> MKVirtualTouristAnnotation {
     
-    let lat = CLLocationDegrees(album.latitude)
-    let long = CLLocationDegrees(album.longitude)
+    let lat = CLLocationDegrees(pin.latitude)
+    let long = CLLocationDegrees(pin.longitude)
     
     let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
     
     let annotation = MKVirtualTouristAnnotation()
-    let albumCount = album.photos!.count
+    let albumCount = pin.album!.count
     annotation.title = "\(albumCount) Photo Album\(albumCount == 1 ? "":"s")"
     annotation.coordinate = coordinate
-    annotation.album = album
-    print("This are my annotations", annotation.album as Any)
+    annotation.pin = pin
+    print("This are my annotations", annotation.pin as Any)
 
     return annotation
     }
@@ -34,6 +34,12 @@ func appHasLaunchedBefore() -> Bool {
         UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
         UserDefaults.standard.synchronize()
         return false
+    }
+}
+
+func removeAnnotations(mapView: MKMapView) {
+    for _annotation in mapView.annotations {
+        mapView.removeAnnotation(_annotation)
     }
 }
 

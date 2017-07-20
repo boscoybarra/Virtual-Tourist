@@ -10,6 +10,6 @@ import UIKit
 import MapKit
 
 class MKVirtualTouristAnnotation: MKPointAnnotation {
-    var album: Album?
+    var pin: Pin?
 }
 

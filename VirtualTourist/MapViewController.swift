@@ -21,6 +21,7 @@ class MapViewController: UIViewController {
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     lazy var context: NSManagedObjectContext = self.appDelegate.stack.context
+    
    
     var selectedAnnotation: MKAnnotation?
     var tempAnnotation: MKPointAnnotation?
@@ -42,7 +43,7 @@ class MapViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        fetchPins()
     }
     
     
@@ -82,10 +83,25 @@ class MapViewController: UIViewController {
     
     
     func savePin(latitude: Double, longitude: Double) {
-        let albumPin = Album(latitude: latitude, longitude: longitude, context: context)
-        print("Latitude in da house",latitude, "Longitude in da house", longitude)
         
-        self.mapView.addAnnotation(getAnnotationFromPin(album: albumPin))
+        print("Latitude in da house",latitude, "Longitude in da house", longitude)
+        let albumPin = Pin(latitude: latitude, longitude: longitude, context: context)
+        let album = Album(name: "Photo Album 0", context: context)
+        album.pin = albumPin
+        self.addPinToMap(pin: albumPin)
+    }
+    
+    func fetchPins() {
+        let pinsFetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
+        
+        do {
+            let pins = try context.fetch(pinsFetchRequest)
+            loadPinsOntoMap(pins: pins)
+        } catch {
+            print("Failed to get Pins")
+            print(error.localizedDescription)
+            self.presentErrorAlertController("Oops!", alertMessage: "There was an error loading your existing pins")
+        }
     }
     
     // MARK: View User Defaults
@@ -112,6 +128,17 @@ class MapViewController: UIViewController {
         UserDefaults.standard.set(coordinate.longitude, forKey: "longitude")
     }
     
+    func addPinToMap(pin: Pin) {
+        print("Lat:\(pin.latitude) - lon:\(pin.longitude)")
+        self.mapView.addAnnotation(getAnnotationFromPin(pin: pin))
+    }
+    
+    func loadPinsOntoMap(pins: [Pin]) {
+        removeAnnotations(mapView: mapView)
+        
+        let _ = pins.map { addPinToMap(pin: $0) }
+    }
+    
     
     func deselectAllAnnotations(){
         
@@ -119,6 +146,17 @@ class MapViewController: UIViewController {
         
         for annotation in selectedAnnotations {
             mapView.deselectAnnotation(annotation, animated: false)
+        }
+    }
+    
+    // MARK:- Segue preparation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueToAlbum" {
+            let vc = segue.destination as! AlbumViewController
+            if let annotation = selectedAnnotation as? MKVirtualTouristAnnotation {
+                vc.pin = annotation.pin
+            }
         }
     }
     

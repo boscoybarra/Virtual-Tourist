@@ -74,7 +74,7 @@ struct CoreDataStack {
             print("unable to add store at \(dbURL)")
         }
         
-        print("This is the URL \(dbURL)")
+        print("This is where the store file is", dbURL)
     }
     
     // MARK: Utils
@@ -153,13 +153,8 @@ extension CoreDataStack {
     func autoSave(_ delayInSeconds : Int) {
         
         if delayInSeconds > 0 {
-            do {
-                try self.context.save()
-                print("Autosaving")
-            } catch {
-                print("Error while autosaving")
-            }
-            
+            self.save()
+            print("Autosaving")
             let delayInNanoSeconds = UInt64(delayInSeconds) * NSEC_PER_SEC
             let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
             
@@ -169,4 +164,3 @@ extension CoreDataStack {
         }
     }
 }
-

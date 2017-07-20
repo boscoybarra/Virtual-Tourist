@@ -35,7 +35,7 @@ extension MapViewController: MKMapViewDelegate {
             print("The Pin is being deleted")
             
             let annotation = view.annotation as! MKVirtualTouristAnnotation
-            let pin = annotation.album!
+            let pin = annotation.pin!
             
             context.delete(pin)
             mapView.removeAnnotation(annotation)

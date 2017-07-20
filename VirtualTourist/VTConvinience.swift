@@ -17,10 +17,10 @@ extension VTClient {
     
     //MARK: -- Function GETs the images from Flickr
     
-    static func getPhotosLocation(album:Album, completionHandler: @escaping PhotoURLsResponse) {
+    static func getPhotosLocation(pin:Pin, completionHandler: @escaping PhotoURLsResponse) {
         
-        let latitude = album.latitude
-        let longitude = album.longitude
+        let latitude = pin.latitude
+        let longitude = pin.longitude
         let bbox = VTClient.bboxString(latitude, long: longitude)
         
             let methodParameters = [

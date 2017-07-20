@@ -12,12 +12,11 @@ import CoreData
 @objc(Album)
 public class Album: NSManagedObject {
     
-    convenience init(latitude: Double, longitude: Double, context: NSManagedObjectContext) {
+    convenience init(name: String, context: NSManagedObjectContext) {
         
         if let entity = NSEntityDescription.entity(forEntityName: "Album", in: context) {
             self.init(entity: entity, insertInto: context)
-            self.latitude = latitude
-            self.longitude = longitude
+            self.name = name
         } else {
             fatalError("Unable to find Entity name")
         }

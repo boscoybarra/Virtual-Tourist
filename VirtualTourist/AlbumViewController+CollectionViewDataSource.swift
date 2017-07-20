@@ -25,32 +25,29 @@ extension AlbumViewController: UICollectionViewDataSource {
         
         let row = indexPath.row
         
-        if row < photos.count {
+        
             let photo = photos[row]
+        let imageData = photo.imageData
             if photo.imageData == nil {
-                VTClient.taskForGETMethod(methodParameters: [:], completionHandler: { (data, error) in
-                    print("Loaded picture from url")
-                    if let imageData = data {
-                        
-                        self.executeOnMain {
-                            photo.imageData = imageData as? NSData
-                            cell.imageView.image = UIImage(data: imageData as! Data)
-                            cell.loadingSpiner.stopAnimating()
-                        }
+                print("Loaded picture from url")
+                
+                    self.performUIUpdatesOnMain {
+                        photo.imageData = imageData
+                        cell.imageView.image = UIImage(data: imageData! as Data)
+                        cell.loadingSpiner.stopAnimating()
                     }
-                })
+                
             } else {
+                //cell.imageView.image = UIImage(named: "loading")
                 cell.imageView.image = UIImage(data: photo.imageData! as Data)
                 cell.loadingSpiner.stopAnimating()
             }
-            
-        } else {
-            cell.imageView.image = UIImage(named: "placeholder")
-            cell.loadingSpiner.startAnimating()
-        }
         
         return cell
+        
     }
+        
+    
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
@@ -72,6 +69,8 @@ extension AlbumViewController: UICollectionViewDataSource {
     
 }
 
+
+
 extension AlbumViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Item Selected")
@@ -89,7 +88,6 @@ extension AlbumViewController: UICollectionViewDelegate {
             photos.remove(at: row)
             context.delete(photo)
             appDelegate.stack.save()
-            //Album?.total -= 1
             collectionView.reloadData()
         }
         

@@ -16,6 +16,7 @@ class AlbumViewController: UIViewController {
     
     var album: Album?
     var photos = [Photo]()
+    var pin: Pin?
     
     @IBOutlet var mapView: MKMapView!
     @IBOutlet var collectionView: UICollectionView!
@@ -34,10 +35,11 @@ class AlbumViewController: UIViewController {
         mapView.delegate = self
         
         collectionView.dataSource = self
-        collectionView.delegate = self
+        collectionView.delegate = self as UICollectionViewDelegate
         
-        if let album = album {
-            let annotation = getAnnotationFromPin(album: album)
+        // Zoom to Pin
+        if let pin = pin {
+            let annotation = getAnnotationFromPin(pin: pin)
             mapView.addAnnotation(annotation)
             zoom(mapView: mapView, location: annotation.coordinate)
         }
@@ -47,36 +49,23 @@ class AlbumViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
  
-        
-        navigationController?.isNavigationBarHidden = false
-        
         getNewPhotos()
       
     }
     
 
    fileprivate func getNewPhotos() {
-        loadingSpiner.isHidden = false
-        
-        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
-        
-            do {
-                photos = try context.fetch(fetchRequest)
-                
-                VTClient.getPhotosLocation(album: album!, completionHandler: createPhotosFromURLs)
+        //loadingSpiner.isHidden = false
+ 
+                VTClient.getPhotosLocation(pin: pin!, completionHandler: createPhotosFromURLs)
                 
                 UIView.transition(with: self.loadingSpiner, duration: TimeInterval(0.5), options: UIViewAnimationOptions.transitionCrossDissolve, animations: {}, completion: {(finished: Bool) -> () in })
+    
                 
-                self.loadingSpiner.isHidden = true
+    
                 
-                collectionView.reloadData()
-            } catch {
-                print("Failed to get Photos")
-                print(error.localizedDescription)
-                self.presentErrorAlertController("Oops!", alertMessage: "There was an error when trying to load your photos")
-            }
-     
-    }
+    
+}
 
     
     // MARK:- Core Data Function
@@ -95,6 +84,7 @@ class AlbumViewController: UIViewController {
             photo.album = album
             photos.append(photo)
         }
+        self.loadingSpiner.isHidden = true
         collectionView.reloadData()
     }
     

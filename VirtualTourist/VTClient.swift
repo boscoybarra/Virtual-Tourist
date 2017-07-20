@@ -16,6 +16,7 @@ class VTClient: NSObject {
     var photos = [Photo]()
     
     static var session = URLSession.shared
+
     
     
     // MARK: GET

@@ -18,7 +18,9 @@ extension Album {
 
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
+    @NSManaged public var name: String?
     @NSManaged public var photos: NSSet?
+    @NSManaged public var pin: Pin?
 
 }
 
