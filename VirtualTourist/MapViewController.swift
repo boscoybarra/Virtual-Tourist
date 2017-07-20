@@ -36,8 +36,7 @@ class MapViewController: UIViewController {
         mapView.delegate = self
         
         initialLongPressDetector()
-        
-        //Fetch albums
+    
         
     }
     
@@ -64,17 +63,16 @@ class MapViewController: UIViewController {
         let location = gestureRecognizer.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
         
-        // Handle drop drag and save
         if gestureRecognizer.state == .began {
             tempAnnotation = getAnnotationFromCoordinate(coordinate: coordinate)
             
             mapView.addAnnotation(tempAnnotation!)
             
         } else if gestureRecognizer.state == .changed {
-            tempAnnotation!.coordinate = coordinate // Can Force unwrap since begin must be called before changed
+            tempAnnotation!.coordinate = coordinate
             
         } else if gestureRecognizer.state == .ended {
-            mapView.removeAnnotation(tempAnnotation!) // Can Force unwrap since begin must be called before ended
+            mapView.removeAnnotation(tempAnnotation!)
             
             savePin(latitude: coordinate.latitude, longitude: coordinate.longitude)
         }
@@ -96,7 +94,7 @@ class MapViewController: UIViewController {
         if appHasLaunchedBefore() {
             let coordinate = getCenter()
             mapView.setCenter(coordinate, animated: false)
-            focus(mapView: mapView, location: coordinate)
+            zoom(mapView: mapView, location: coordinate)
         } else {
             saveCenter(coordinate: mapView.centerCoordinate)
         }

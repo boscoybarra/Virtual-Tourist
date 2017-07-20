@@ -39,7 +39,7 @@ func appHasLaunchedBefore() -> Bool {
 
 // Focuses a mapview onto a specific Location coordinate
 
-func focus(mapView: MKMapView, location: CLLocationCoordinate2D) {
+func zoom(mapView: MKMapView, location: CLLocationCoordinate2D) {
     let latitude = CLLocationDegrees(location.latitude)
     let longitude = CLLocationDegrees(location.longitude)
     let latDelta: CLLocationDegrees = 0.5

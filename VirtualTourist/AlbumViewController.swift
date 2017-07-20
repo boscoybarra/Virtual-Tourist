@@ -36,11 +36,10 @@ class AlbumViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        // Add annotation to the map and focus on it
         if let album = album {
             let annotation = getAnnotationFromPin(album: album)
             mapView.addAnnotation(annotation)
-            focus(mapView: mapView, location: annotation.coordinate)
+            zoom(mapView: mapView, location: annotation.coordinate)
         }
     }
     
@@ -74,7 +73,7 @@ class AlbumViewController: UIViewController {
             } catch {
                 print("Failed to get Photos")
                 print(error.localizedDescription)
-                self.presentErrorAlertController("Oops!", alertMessage: "There was an error loading your photos")
+                self.presentErrorAlertController("Oops!", alertMessage: "There was an error when trying to load your photos")
             }
      
     }
@@ -84,7 +83,7 @@ class AlbumViewController: UIViewController {
     
     func createPhotosFromURLs(urls: [String]?, error: Error?) {
         guard error == nil else {
-            self.presentErrorAlertController("Error loading Photos from Server", alertMessage: "There was an error dowloading photos for this pin.")
+            self.presentErrorAlertController("There was an error when loading photo from Server", alertMessage: "There was an error dowloading the photos from selected pin.")
             return
         }
         
