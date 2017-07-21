@@ -4,6 +4,7 @@
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="total" attributeType="Integer 16" defaultValueString="20" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="album" inverseEntity="Photo" syncable="YES"/>
         <relationship name="pin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pin" inverseName="album" inverseEntity="Pin" syncable="YES"/>
     </entity>
@@ -18,7 +19,7 @@
         <relationship name="album" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Album" inverseName="pin" inverseEntity="Album" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Album" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Album" positionX="-63" positionY="-18" width="128" height="135"/>
         <element name="Photo" positionX="-54" positionY="-9" width="128" height="90"/>
         <element name="Pin" positionX="-54" positionY="18" width="128" height="90"/>
     </elements>

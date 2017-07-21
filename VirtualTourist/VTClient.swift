@@ -19,7 +19,7 @@ class VTClient: NSObject {
 
     
     
-    // MARK: GET
+    // MARK: GET URL With Parameters
     
     @discardableResult static func taskForGETMethod(methodParameters: [String:AnyObject], completionHandler: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask{
         
@@ -27,8 +27,6 @@ class VTClient: NSObject {
         let url = self.flickrURLFromParameters(methodParameters)
         
         let request = NSMutableURLRequest(url: url)
-        
-        print("This is the URL request",request)
         
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
@@ -63,6 +61,50 @@ class VTClient: NSObject {
         
     }
     
+    
+    // MARK: GET Data With URLs
+    
+    @discardableResult static func taskForGETDataMethod(url urlString: String, completionHandler: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask{
+        
+        
+        let request = NSMutableURLRequest(url: URL(string: urlString)!)
+        
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+            
+            
+            func sendError(_ error: String) {
+                print(error)
+                let userInfo = [NSLocalizedDescriptionKey : error]
+                completionHandler(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+                return
+            }
+            
+            guard (error == nil) else {
+                sendError("There was an error with your request: \(error!)")
+                return
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                sendError("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            guard let data = data else {
+                sendError("No data was returned by the request!")
+                return
+            }
+            
+            completionHandler(data as AnyObject, nil)
+            
+        }
+        
+        task.resume()
+        return task
+        
+    }
+    
+    
+    // MARK: Helper Methods
 
     private static func parseJSONWithCompletionHandler(data: NSData, completionHandler: (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
@@ -112,7 +154,7 @@ class VTClient: NSObject {
         
     }
     
-    static func convertPhotoObjectToUrl(_ object: NSDictionary) -> String{
+    static func convertPhotoObjectToUrl(_ object: NSDictionary) -> String {
         let farmId = object["farm"] as! Int
         let serverId = object["server"] as! NSString
         let photoId = object["id"] as! NSString

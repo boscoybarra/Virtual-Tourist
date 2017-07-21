@@ -100,7 +100,7 @@ class MapViewController: UIViewController {
         } catch {
             print("Failed to get Pins")
             print(error.localizedDescription)
-            self.presentErrorAlertController("Oops!", alertMessage: "There was an error loading your existing pins")
+            self.showAlert(title:"Oops!", message: "There was an error loading your existing pins")
         }
     }
     

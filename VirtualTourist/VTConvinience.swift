@@ -49,7 +49,16 @@ extension VTClient {
                 return
             }
             
-            guard let photosArray = photosDictionary[Constants.FlickrResponseKeys.Photo] as? NSArray else {
+            guard let totalStrings = photosDictionary[Constants.FlickrResponseKeys.Total] as? String else {
+                sendError("Photos dictionary could not be printed in \(String(describing: photosDictionary))")
+                return
+            }
+            
+            let total = Int(totalStrings)!
+            
+            if total > 0 {
+            
+            guard let photosArray = photosDictionary[Constants.FlickrResponseKeys.Photo] as? [Dictionary<String, AnyObject>] else {
                 sendError("Photos dictionary could not be printed in \(String(describing: photosDictionary))")
                 return
             }
@@ -58,19 +67,37 @@ extension VTClient {
             
             
             for photo in photosArray {
-                results.append(self.convertPhotoObjectToUrl(photo as! NSDictionary))
+                results.append(self.convertPhotoObjectToUrl(photo as NSDictionary))
             }
             
-            completionHandler(results, error)
+            completionHandler(results, nil)
             
-            print("This are my urls?",results)
-
+                
+            } else {
+                print("No data from Flickr at this place")
+                completionHandler([], nil)
+            }
         }
     }
+    
+    func checkGetRequestData(url urlString: String, completion: @escaping (Data?, Error?) -> Void) {
+        
+       
+        
+        VTClient.taskForGETDataMethod(url: urlString) { (data: AnyObject?, error: NSError?) in
+            func sendError(_ error: String) {
+                _ = [NSLocalizedDescriptionKey : error]
+                
+            }
+            
+            completion(data as? Data, error)
+            
+             
+        }
+    }
+
+
 }
-
-
-
 
 
 

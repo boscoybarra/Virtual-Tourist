@@ -14,7 +14,6 @@ class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var loadingSpiner: UIActivityIndicatorView!
     
-    
     func setImage(image: UIImage) {
         loadingSpiner.stopAnimating()
         self.imageView.image = image

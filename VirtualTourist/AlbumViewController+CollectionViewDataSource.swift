@@ -12,39 +12,39 @@ import UIKit
 extension AlbumViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if album?.photos == nil {
-            return 0
-        } else {
-            return album!.photos!.count
-        }
+        return Int((album?.total)!)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PhotoCell
-        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoCell
+
         let row = indexPath.row
         
-        
+        if row < photos.count {
             let photo = photos[row]
-        let imageData = photo.imageData
             if photo.imageData == nil {
-                print("Loaded picture from url")
-                
-                    self.performUIUpdatesOnMain {
-                        photo.imageData = imageData
-                        cell.imageView.image = UIImage(data: imageData! as Data)
-                        cell.loadingSpiner.stopAnimating()
+                VTClient.sharedInstance().checkGetRequestData(url: photo.url!, completion: { data, error in
+                    print("Loaded picture from url")
+                    if let imageData = data {
+                        
+                        self.performUIUpdatesOnMain {
+                            photo.imageData = imageData as NSData
+                            cell.imageView.image = UIImage(data: imageData)
+                            cell.loadingSpiner.stopAnimating()
+                        }
                     }
-                
+                })
             } else {
-                //cell.imageView.image = UIImage(named: "loading")
                 cell.imageView.image = UIImage(data: photo.imageData! as Data)
                 cell.loadingSpiner.stopAnimating()
             }
+            
+        } else {
+            cell.imageView.image = UIImage(named: "loading")
+            cell.loadingSpiner.startAnimating()
+        }
         
         return cell
-        
     }
         
     
