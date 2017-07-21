@@ -48,13 +48,14 @@ class AlbumViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadingSpiner.isHidden = false
         
         setupPhotoAlbum()
         
         let photoCount = Int((album?.total)!)
         
         guard photoCount > 0 else {
-            self.showAlert(title:"No Photos!", message: "Sorry we have no photos for this area")
+            self.presentErrorAlertController("No Photos!", alertMessage: "Sorry we have no photos for this area")
             return
         }
  
@@ -74,29 +75,32 @@ class AlbumViewController: UIViewController {
             }
             collectionView.reloadData()
         } catch {
-            
+            DispatchQueue.main.async(){
             print("Failed to get Photos")
             print(error.localizedDescription)
-            self.showAlert(title: "Oops!", message: "There was an error loading your photos")
-            
+            self.presentErrorAlertController("Oops!", alertMessage: "There was an error loading your photos")
+            }
         }
     }
 
     
     // MARK:- Core Data Function
     
+    
+    
     func createPhotosFromURLs(urls: [String]?, error: Error?) {
         guard error == nil else {
-            self.showAlert(title:"There was an error when loading photo from Server", message: "There was an error dowloading the photos from selected pin.")
+            self.presentErrorAlertController("There was an error when loading photo from Server", alertMessage: "There was an error dowloading the photos from selected pin.")
             return
         }
         
-        let numberOfPhotos = min(20, urls!.count)
-        let randomURLs = urls!.choose(Int(numberOfPhotos))
+        let minNumberOfPhotos = min(20, urls!.count)
+        let randomURLs = urls!.choose(Int(minNumberOfPhotos))
+        
         
         for url in randomURLs {
             
-            album!.total = Int16(numberOfPhotos)
+            album!.total = Int16(minNumberOfPhotos)
             
             let photo = Photo(url: url, context: context)
             photo.album = album
@@ -104,6 +108,7 @@ class AlbumViewController: UIViewController {
         }
         
         collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
+        UIView.transition(with: self.loadingSpiner, duration: TimeInterval(0.4), options: UIViewAnimationOptions.transitionCrossDissolve, animations: {}, completion: {(finished: Bool) -> () in })
         self.loadingSpiner.isHidden = true
         collectionView.reloadData()
     }

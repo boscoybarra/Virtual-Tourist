@@ -67,7 +67,6 @@
         <!--Album View Controller-->
         <scene sceneID="dxe-pI-nwK">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wjP-pq-f8c" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="vmS-zZ-gXF" customClass="AlbumViewController" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cSl-Eq-1zc"/>
@@ -183,10 +182,11 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="4ex-DE-sh1" id="QZQ-Yy-Jzl"/>
-                        <outlet property="loadingSpiner" destination="Bn4-L9-IS3" id="H1h-rX-Ezq"/>
+                        <outlet property="loadingSpiner" destination="Hht-NN-xuR" id="VJN-6h-dKk"/>
                         <outlet property="mapView" destination="VMB-L0-jWm" id="Zyj-R0-fEe"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wjP-pq-f8c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2177" y="311"/>
         </scene>
