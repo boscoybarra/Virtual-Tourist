@@ -81,16 +81,6 @@ class MapViewController: UIViewController {
     
     // MARK: Core Data Functions
     
-    
-    func savePin(latitude: Double, longitude: Double) {
-        
-        print("Latitude in da house",latitude, "Longitude in da house", longitude)
-        let albumPin = Pin(latitude: latitude, longitude: longitude, context: context)
-        let album = Album(name: "Photo Album 0", context: context)
-        album.pin = albumPin
-        self.addPinToMap(pin: albumPin)
-    }
-    
     func fetchPins() {
         let pinsFetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
         
@@ -102,6 +92,13 @@ class MapViewController: UIViewController {
             print(error.localizedDescription)
             self.showAlert(title:"Oops!", message: "There was an error loading your existing pins")
         }
+    }
+    
+    func savePin(latitude: Double, longitude: Double) {
+        let albumPin = Pin(latitude: latitude, longitude: longitude, context: context)
+        let album = Album(name: "Photo Album 0", context: context)
+        album.pin = albumPin
+        self.addPinToMap(pin: albumPin)
     }
     
     // MARK: View User Defaults

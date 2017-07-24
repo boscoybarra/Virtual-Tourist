@@ -12,7 +12,7 @@ import UIKit
 extension AlbumViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Int((album?.total)!)
+        return Int(album!.total)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -88,6 +88,7 @@ extension AlbumViewController: UICollectionViewDelegate {
             photos.remove(at: row)
             context.delete(photo)
             appDelegate.stack.save()
+            album?.total -= 1
             collectionView.reloadData()
         }
         
