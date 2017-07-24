@@ -11,6 +11,7 @@ import UIKit
 
 extension AlbumViewController: UICollectionViewDataSource {
     
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Int(album!.total)
     }

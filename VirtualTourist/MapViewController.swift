@@ -90,7 +90,7 @@ class MapViewController: UIViewController {
         } catch {
             print("Failed to get Pins")
             print(error.localizedDescription)
-            self.showAlert(title:"Oops!", message: "There was an error loading your existing pins")
+            self.presentErrorAlertController("Oops!", alertMessage: "There was an error loading your existing pins")
         }
     }
     
@@ -99,6 +99,8 @@ class MapViewController: UIViewController {
         let album = Album(name: "Photo Album 0", context: context)
         album.pin = albumPin
         self.addPinToMap(pin: albumPin)
+        
+        appDelegate.stack.save()
     }
     
     // MARK: View User Defaults

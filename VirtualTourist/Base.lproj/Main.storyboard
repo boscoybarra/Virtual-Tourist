@@ -151,30 +151,13 @@
                                     <outlet property="delegate" destination="vmS-zZ-gXF" id="YGx-j7-3OB"/>
                                 </connections>
                             </mapView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hht-NN-xuR">
-                                <rect key="frame" x="0.0" y="192" width="375" height="475"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Bn4-L9-IS3">
-                                        <rect key="frame" x="169" y="219" width="37" height="37"/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="Bn4-L9-IS3" secondAttribute="centerX" id="RBE-Uu-JCE"/>
-                                    <constraint firstAttribute="centerY" secondItem="Bn4-L9-IS3" secondAttribute="centerY" id="uar-wd-vbq"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Hht-NN-xuR" secondAttribute="trailing" id="Ed9-OK-PWJ"/>
                             <constraint firstAttribute="trailing" secondItem="VMB-L0-jWm" secondAttribute="trailing" id="Qmk-6x-ExN"/>
                             <constraint firstAttribute="trailing" secondItem="4ex-DE-sh1" secondAttribute="trailing" id="Qz9-Rm-ioI"/>
                             <constraint firstItem="4ex-DE-sh1" firstAttribute="leading" secondItem="kwt-V4-kvB" secondAttribute="leading" id="WzI-hU-0Y0"/>
-                            <constraint firstItem="NT6-HG-tzI" firstAttribute="top" secondItem="Hht-NN-xuR" secondAttribute="bottom" id="Z0g-3h-eEJ"/>
-                            <constraint firstItem="Hht-NN-xuR" firstAttribute="leading" secondItem="kwt-V4-kvB" secondAttribute="leading" id="aAf-p9-f3G"/>
                             <constraint firstItem="4ex-DE-sh1" firstAttribute="top" secondItem="VMB-L0-jWm" secondAttribute="bottom" id="dA7-qj-DSy"/>
-                            <constraint firstItem="Hht-NN-xuR" firstAttribute="top" secondItem="VMB-L0-jWm" secondAttribute="bottom" id="dAe-EF-BZN"/>
                             <constraint firstItem="VMB-L0-jWm" firstAttribute="leading" secondItem="kwt-V4-kvB" secondAttribute="leading" id="e8M-eg-Skj"/>
                             <constraint firstItem="VMB-L0-jWm" firstAttribute="top" secondItem="cSl-Eq-1zc" secondAttribute="bottom" id="r8w-Cc-yxx"/>
                             <constraint firstItem="NT6-HG-tzI" firstAttribute="top" secondItem="4ex-DE-sh1" secondAttribute="bottom" id="saB-DS-FHT"/>
@@ -182,7 +165,6 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="4ex-DE-sh1" id="QZQ-Yy-Jzl"/>
-                        <outlet property="loadingSpiner" destination="Hht-NN-xuR" id="VJN-6h-dKk"/>
                         <outlet property="mapView" destination="VMB-L0-jWm" id="Zyj-R0-fEe"/>
                     </connections>
                 </viewController>

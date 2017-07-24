@@ -48,7 +48,7 @@ class AlbumViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadingSpiner.isHidden = false
+        
         
         setupPhotoAlbum()
         
@@ -107,9 +107,8 @@ class AlbumViewController: UIViewController {
             photos.append(photo)
         }
         
-        collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
-        UIView.transition(with: self.loadingSpiner, duration: TimeInterval(0.4), options: UIViewAnimationOptions.transitionCrossDissolve, animations: {}, completion: {(finished: Bool) -> () in })
-        self.loadingSpiner.isHidden = true
+       appDelegate.stack.save()
+        
         collectionView.reloadData()
     }
     

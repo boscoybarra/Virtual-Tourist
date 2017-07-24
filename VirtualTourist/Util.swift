@@ -17,8 +17,7 @@ func getAnnotationFromPin(pin: Pin) -> MKVirtualTouristAnnotation {
     let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
     
     let annotation = MKVirtualTouristAnnotation()
-    let albumCount = pin.album!.count
-    annotation.title = "\(albumCount) Photo Album\(albumCount == 1 ? "":"s")"
+    annotation.title = "Photo Album"
     annotation.coordinate = coordinate
     annotation.pin = pin
 
