@@ -41,7 +41,7 @@ extension AlbumViewController: UICollectionViewDataSource {
             }
             
         } else {
-            cell.imageView.image = UIImage(named: "loading")
+            cell.imageView.image = UIImage(named: "Rectangle")
             cell.loadingSpiner.startAnimating()
         }
         

@@ -107,7 +107,7 @@ class AlbumViewController: UIViewController {
             photos.append(photo)
         }
         
-       appDelegate.stack.save()
+        appDelegate.stack.save()
         
         collectionView.reloadData()
     }
@@ -117,16 +117,21 @@ class AlbumViewController: UIViewController {
     // MARK: IBActions
     
     @IBAction func newCollection() {
-        self.removeAllPhotos()
+//        defer {
+            removeAllPhotos()
+//        }
         getNewPhotos()
     }
+    
     
     // MARK: Remove Photos
     
     func removeAllPhotos(){
-        while (photos.count > 0) {
-            photos[0].album = nil
+        for photo in photos {
+            context.delete(photo)
         }
+
+        photos = []
     }
 
 
