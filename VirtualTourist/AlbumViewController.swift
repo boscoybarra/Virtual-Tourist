@@ -20,7 +20,6 @@ class AlbumViewController: UIViewController {
     
     @IBOutlet var mapView: MKMapView!
     @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet weak var loadingSpiner: UIView!
     var buttonNewCollection: UIButton?
     var noImagesLabel: UILabel?
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -30,6 +29,10 @@ class AlbumViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mapView.delegate = self
+        collectionView.dataSource = self
+        collectionView.delegate = self
         
         // Zoom to Pin
         if let pin = pin {
@@ -41,14 +44,20 @@ class AlbumViewController: UIViewController {
     
     
     func setupPhotoAlbum() {
-        // Setup Button and TextField
-            let photoAlbums = pin?.album?.allObjects as! [Album]
-            album = photoAlbums[0]
+        
+        
+        addPinToMap(pin: self.pin!)
+        
+//       After creating an album, the next albums do not contain new photos. All albums display the same photos. I think the .album variable is the same for all pins.
+        
+        let photoAlbums = pin?.albums?.allObjects as! [Album]
+        album = photoAlbums[0]
+        
+        //Try to make a new Core Data fetch request for the selected pin when opening the Photo Album.
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         
         setupPhotoAlbum()
         
@@ -58,10 +67,16 @@ class AlbumViewController: UIViewController {
             self.presentErrorAlertController("No Photos!", alertMessage: "Sorry we have no photos for this area")
             return
         }
- 
+        
         getNewPhotos()
       
     }
+        
+        
+        func addPinToMap(pin: Pin) {
+            print("Hello Album Lat:\(pin.latitude) - Hello Album lon:\(pin.longitude)")
+            self.mapView.addAnnotation(getAnnotationFromPin(pin: pin))
+        }
     
 
     fileprivate func getNewPhotos() {

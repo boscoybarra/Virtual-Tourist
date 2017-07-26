@@ -137,19 +137,12 @@
                                         <constraint firstAttribute="centerY" secondItem="FFc-FS-4s9" secondAttribute="centerY" id="yzs-CG-lcR"/>
                                     </constraints>
                                 </collectionReusableView>
-                                <connections>
-                                    <outlet property="dataSource" destination="vmS-zZ-gXF" id="MKd-KL-gpB"/>
-                                    <outlet property="delegate" destination="vmS-zZ-gXF" id="alZ-qZ-jYq"/>
-                                </connections>
                             </collectionView>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="VMB-L0-jWm">
                                 <rect key="frame" x="0.0" y="64" width="375" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="FeD-JD-7q7"/>
                                 </constraints>
-                                <connections>
-                                    <outlet property="delegate" destination="vmS-zZ-gXF" id="YGx-j7-3OB"/>
-                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

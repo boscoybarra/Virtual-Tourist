@@ -11,7 +11,6 @@ import UIKit
 
 extension AlbumViewController: UICollectionViewDataSource {
     
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Int(album!.total)
     }
@@ -24,6 +23,7 @@ extension AlbumViewController: UICollectionViewDataSource {
         if row < photos.count {
             let photo = photos[row]
             if photo.imageData == nil {
+               // cell.loadingSpiner.startAnimating()
                 VTClient.sharedInstance().checkGetRequestData(url: photo.url!, completion: { data, error in
                     print("Loaded picture from url")
                     if let imageData = data {
