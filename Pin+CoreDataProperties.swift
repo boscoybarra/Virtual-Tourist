@@ -2,7 +2,7 @@
 //  Pin+CoreDataProperties.swift
 //  VirtualTourist
 //
-//  Created by J B on 7/26/17.
+//  Created by J B on 7/28/17.
 //  Copyright © 2017 J B. All rights reserved.
 //
 
@@ -18,6 +18,7 @@ extension Pin {
 
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
+    @NSManaged public var creationDate: NSDate?
     @NSManaged public var albums: NSSet?
 
 }

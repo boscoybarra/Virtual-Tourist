@@ -17,6 +17,9 @@ class AlbumViewController: UIViewController {
     var album: Album?
     var photos = [Photo]()
     var pin: Pin?
+    var albums = [Album]()
+    var pins = [Pin]()
+  
     
     @IBOutlet var mapView: MKMapView!
     @IBOutlet var collectionView: UICollectionView!
@@ -40,24 +43,19 @@ class AlbumViewController: UIViewController {
             mapView.addAnnotation(annotation)
             zoom(mapView: mapView, location: annotation.coordinate)
         }
+        
+       //  Create a fetchrequest
+            let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
+            fr.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false),
+                                          NSSortDescriptor(key: "creationDate", ascending: false)]
+        
+       
     }
     
-    
-    func setupPhotoAlbum() {
-        
-        
-        addPinToMap(pin: self.pin!)
-        
-//       After creating an album, the next albums do not contain new photos. All albums display the same photos. I think the .album variable is the same for all pins.
-        
-        let photoAlbums = pin?.albums?.allObjects as! [Album]
-        album = photoAlbums[0]
-        
-        //Try to make a new Core Data fetch request for the selected pin when opening the Photo Album.
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         
         setupPhotoAlbum()
         
@@ -69,23 +67,30 @@ class AlbumViewController: UIViewController {
         }
         
         getNewPhotos()
-      
+            
     }
+    
+    func setupPhotoAlbum() {
+
         
-        
-        func addPinToMap(pin: Pin) {
-            print("Hello Album Lat:\(pin.latitude) - Hello Album lon:\(pin.longitude)")
-            self.mapView.addAnnotation(getAnnotationFromPin(pin: pin))
-        }
+        let photoAlbums = pin?.albums?.allObjects as! [Album]
+        album = photoAlbums[0]
+    }
     
 
     fileprivate func getNewPhotos() {
-        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Photo.fetchRequest()
+        
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        
+        let predicate = NSPredicate(format: "album = %@", argumentArray: [album!])
+        fetchRequest.predicate = predicate
         
         do {
-            photos = try context.fetch(fetchRequest)
+            photos = try context.fetch(fetchRequest) as! [Photo]
             
-            if album!.photos!.count != Int((album?.total)!) {
+            if (album?.photos!.count)! != Int((album?.total)!) {
                 VTClient.getPhotosLocation(pin: pin!, completionHandler: createPhotosFromURLs)
             }
             collectionView.reloadData()
@@ -115,7 +120,7 @@ class AlbumViewController: UIViewController {
         
         for url in randomURLs {
             
-            album!.total = Int16(minNumberOfPhotos)
+            album?.total = Int16(minNumberOfPhotos)
             
             let photo = Photo(url: url, context: context)
             photo.album = album

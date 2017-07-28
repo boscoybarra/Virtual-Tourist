@@ -2,7 +2,7 @@
 //  Album+CoreDataProperties.swift
 //  VirtualTourist
 //
-//  Created by J B on 7/26/17.
+//  Created by J B on 7/28/17.
 //  Copyright © 2017 J B. All rights reserved.
 //
 
@@ -16,10 +16,9 @@ extension Album {
         return NSFetchRequest<Album>(entityName: "Album")
     }
 
-    @NSManaged public var latitude: Double
-    @NSManaged public var longitude: Double
     @NSManaged public var name: String?
     @NSManaged public var total: Int16
+    @NSManaged public var creationDate: NSDate?
     @NSManaged public var photos: NSSet?
     @NSManaged public var pin: Pin?
 

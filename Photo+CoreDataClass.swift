@@ -2,7 +2,7 @@
 //  Photo+CoreDataClass.swift
 //  VirtualTourist
 //
-//  Created by J B on 7/26/17.
+//  Created by J B on 7/28/17.
 //  Copyright © 2017 J B. All rights reserved.
 //
 
@@ -16,6 +16,7 @@ public class Photo: NSManagedObject {
         if let ent = NSEntityDescription.entity(forEntityName: "Photo", in: context){
             self.init(entity:ent, insertInto: context)
             self.url = url
+            self.creationDate = Date() as NSDate
         } else {
             fatalError("Unable to find Entity name")
         }

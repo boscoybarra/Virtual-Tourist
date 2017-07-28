@@ -88,15 +88,15 @@ class MapViewController: UIViewController {
             let pins = try context.fetch(pinsFetchRequest)
             loadPinsOntoMap(pins: pins)
         } catch {
-            print("Failed to get Pins")
+            print("Failed to get the pins")
             print(error.localizedDescription)
-            self.presentErrorAlertController("Oops!", alertMessage: "There was an error loading your existing pins")
+            self.presentErrorAlertController("Oh!", alertMessage: "Something unexpected happened when loading your pins")
         }
     }
     
     func savePin(latitude: Double, longitude: Double) {
         let albumPin = Pin(latitude: latitude, longitude: longitude, context: context)
-        let album = Album(name: "Photo Album 0", context: context)
+        let album = Album(name: "Photo Album", context: context)
         album.pin = albumPin
         self.addPinToMap(pin: albumPin)
         
@@ -128,7 +128,7 @@ class MapViewController: UIViewController {
     }
     
     func addPinToMap(pin: Pin) {
-        print("Lat:\(pin.latitude) - lon:\(pin.longitude)")
+        print("latitude:\(pin.latitude) - longitude:\(pin.longitude)")
         self.mapView.addAnnotation(getAnnotationFromPin(pin: pin))
     }
     
