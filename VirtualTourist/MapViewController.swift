@@ -129,7 +129,7 @@ class MapViewController: UIViewController {
     
     func addPinToMap(pin: Pin) {
         print("latitude:\(pin.latitude) - longitude:\(pin.longitude)")
-        self.mapView.addAnnotation(getAnnotationFromPin(pin: pin))
+        mapView.addAnnotation(getAnnotationFromPin(pin: pin))
     }
     
     func loadPinsOntoMap(pins: [Pin]) {

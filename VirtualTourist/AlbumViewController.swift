@@ -17,8 +17,6 @@ class AlbumViewController: UIViewController {
     var album: Album?
     var photos = [Photo]()
     var pin: Pin?
-    var albums = [Album]()
-    var pins = [Pin]()
   
     
     @IBOutlet var mapView: MKMapView!
@@ -43,11 +41,6 @@ class AlbumViewController: UIViewController {
             mapView.addAnnotation(annotation)
             zoom(mapView: mapView, location: annotation.coordinate)
         }
-        
-       //  Create a fetchrequest
-            let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
-            fr.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false),
-                                          NSSortDescriptor(key: "creationDate", ascending: false)]
         
        
     }
@@ -95,11 +88,9 @@ class AlbumViewController: UIViewController {
             }
             collectionView.reloadData()
         } catch {
-            DispatchQueue.main.async(){
-            print("Failed to get Photos")
+            print("Failed to get photos")
             print(error.localizedDescription)
             self.presentErrorAlertController("Oops!", alertMessage: "There was an error loading your photos")
-            }
         }
     }
 
@@ -137,9 +128,9 @@ class AlbumViewController: UIViewController {
     // MARK: IBActions
     
     @IBAction func newCollection() {
-//        defer {
-            removeAllPhotos()
-//        }
+        
+        removeAllPhotos()
+
         getNewPhotos()
     }
     
