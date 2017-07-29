@@ -21,6 +21,7 @@ class AlbumViewController: UIViewController {
     
     @IBOutlet var mapView: MKMapView!
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet weak var cellLayout: UICollectionViewFlowLayout!
     var buttonNewCollection: UIButton?
     var noImagesLabel: UILabel?
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -34,6 +35,15 @@ class AlbumViewController: UIViewController {
         mapView.delegate = self
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        // Collection View
+        let space: CGFloat = 3.0
+        let dimension = (self.view.frame.size.width - (2*space)) / 3.0
+        
+        cellLayout.minimumInteritemSpacing = space
+        cellLayout.minimumLineSpacing = space
+        cellLayout.itemSize = CGSize(width: dimension, height: dimension)
+
         
         // Zoom to Pin
         if let pin = pin {
